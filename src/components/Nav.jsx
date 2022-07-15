@@ -15,7 +15,7 @@ const Nav = () => {
   return (
     <nav>
       <div className="nav__container">
-        <Link to="">
+        <Link to="/">
           <img src={LibraryLogo} alt="" className="logo" />
         </Link>
         <ul className="nav__links">
