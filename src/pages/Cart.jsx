@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import Book from '../components/ui/Book';
 
 const Cart = ({ cart }) => {
   return (
@@ -21,13 +22,17 @@ const Cart = ({ cart }) => {
                     return (
                       <div className="cart__item">
                         <div className="cart__book">
-                          <img src="https://covers.openlibrary.org/b/id/8091016-L.jpg" className='cart__book--img' alt="" />
+                          <img 
+                          src={book.url} 
+                          className='cart__book--img' 
+                          alt="" 
+                          />
                           <div className="cart__book--info">
-                            <span className='cart__book--title'>
-                              Crack the coding interview
+                            <span className="cart__book--title">
+                              {book.title}
                             </span>
                             <span className="cart__book--price">
-                              $10.00
+                              {(book.salePrice || book.originalPrice).toFixed(2)}
                             </span>
                             <button className="cart__book--remove">Remove</button>
                           </div>
