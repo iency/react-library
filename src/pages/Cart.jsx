@@ -1,10 +1,10 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
-import Book from '../components/ui/Book';
+import React from "react";
+import { Link } from "react-router-dom";
+import EmptyCart from "../assets/empty_cart.svg";
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, updateCart, removeItem, totals }) => {
   return (
-    <div id='books__body'>
+    <div id="books__body">
       <main id="books__main">
         <div className="books__container">
           <div className="row">
@@ -18,58 +18,85 @@ const Cart = ({ cart }) => {
                 <span className="cart__total">Price</span>
               </div>
               <div className="cart__body">
-                {cart.map((book) => {
-                    return (
-                      <div className="cart__item">
-                        <div className="cart__book">
-                          <img 
-                          src={book.url} 
-                          className='cart__book--img' 
-                          alt="" 
-                          />
-                          <div className="cart__book--info">
-                            <span className="cart__book--title">
-                              {book.title}
-                            </span>
-                            <span className="cart__book--price">
-                              {(book.salePrice || book.originalPrice).toFixed(2)}
-                            </span>
-                            <button className="cart__book--remove">Remove</button>
-                          </div>
-                        </div>
-                        <div className="cart__quantity">
-                          <input type="number" min={0} max={99} className="cart__input" />
-                        </div>
-                        <div className="cart__total">
-                          $10.00
+                {cart.map((item) => {
+                  const itemPrice = item.salePrice || item.originalPrice;
+                  return (
+                    <div className="cart__item" key={item.id}>
+                      <div className="cart__book">
+                        <img
+                          className="cart__book--img"
+                          src={item.url}
+                          alt=""
+                        />
+                        <div className="cart__book--info">
+                          <span className="cart__book--title">
+                            {item.title}
+                          </span>
+                          <span className="cart__book--price">
+                            ${itemPrice.toFixed(2)}
+                          </span>
+                          <button
+                            className="cart__book--remove"
+                            onClick={() => removeItem(item)}
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
-                    )
-                  })
-                }
-
+                      <div className="cart__quantity">
+                        <input
+                          type="number"
+                          className="cart__input"
+                          min={0}
+                          max={99}
+                          value={item.quantity}
+                          onChange={(event) =>
+                            updateCart(item, event.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="cart__total">
+                        ${(itemPrice * item.quantity).toFixed(2)}
+                      </div>
+                    </div>
+                  );
+                })}
+                {/* {(!cart || !cart.length) && <img src={EmptyCart}/>} */}
+                {(!cart || !cart.length) && (
+                  <div className="cart__empty">
+                    <img className="cart__empty--img" src={EmptyCart} alt="" />
+                    <h2>You don't have any books in your cart!</h2>
+                    <Link to="/books">
+                      <button className="btn">Browse books</button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="total">
-              <div className="total__item total__sub-total">
-                <span>Subtotal</span>
-                <span>$9.00</span>
+            {cart && cart.length > 0 && (
+              <div className="total">
+                <div className="total__item total__sub-total">
+                  <span>Subtotal</span>
+                  <span>${totals.subtotal.toFixed(2)}</span>
+                </div>
+                <div className="total__item total__tax">
+                  <span>Tax</span>
+                  <span>${totals.tax.toFixed(2)}</span>
+                </div>
+                <div className="total__item total__price">
+                  <span>Total</span>
+                  <span>${totals.total.toFixed(2)}</span>
+                </div>
+                <button className="btn btn__checkout no-cursor" onClick={() => alert(`Haven't got around to doing this :(`)}>
+                  Proceed to checkout
+                </button>
               </div>
-              <div className="total__item total__tax">
-                <span>Tax</span>
-                <span>$1.00</span>
-              </div>
-              <div className="total__item total__price">
-                <span>Total</span>
-                <span>$10.00</span>
-              </div>
-              <button className='btn btn__checkout no-cursor' onClick={() => alert("Haven't got around to doing this :(")}>Proceed to checkout</button>
-            </div>
+            )}
           </div>
         </div>
       </main>
     </div>
   );
-}
+};
 
 export default Cart;
