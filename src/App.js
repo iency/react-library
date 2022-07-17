@@ -78,7 +78,7 @@ function App() {
   }
 
   return (
-    <Router forceRefresh={true}>
+    <Router>
       <div className="App">
         <Nav numberOfItems={numberOfItems()} />
         <Route path="/" exact render={() => <Home books={books} />} />
@@ -107,4 +107,3 @@ function App() {
 }
 
 export default App;
-
